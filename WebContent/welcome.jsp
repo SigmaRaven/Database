@@ -8,14 +8,25 @@ pageEncoding="ISO-8859-1"%>
 <title>Welcome</title>
 </head>
 <body>
+
+<%
+if(session.getAttribute("username") != null) {
+%>
 <ul>
   <li><a href="welcome.jsp">Home</a></li>
   <li><a href="shopping_cart.jsp">My Cart</a></li>
   <li><a href="search.jsp">Item Search</a></li>
   <li><a href="logout.jsp">Logout</a></li>
 </ul>
-
 <h1>Welcome, <%=session.getAttribute("username")%></h1>
+<%} else { %>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="login.jsp">Login</a></li>
+</ul>
+<h1>Welcome to Luckerdogs!</h1>
+<%} %>
 <p>
 </body>
 </html>

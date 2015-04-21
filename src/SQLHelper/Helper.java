@@ -7,6 +7,7 @@ import java.sql.SQLException;
 public class Helper {
 	
 	public static Connection openDBConnection(){
+		System.out.println("nokay");
 		Connection conn = null;
 		
 		String driver = "com.mysql.jdbc.Driver";
@@ -27,6 +28,7 @@ public class Helper {
 			e.printStackTrace();
 			return null;
 		}
+		System.out.println("ok");
 		return conn;
 	}
 	

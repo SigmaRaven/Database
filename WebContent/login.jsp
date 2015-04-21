@@ -1,63 +1,63 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*"%>
-<%@ page import="SQLHelper.*"%>
+<%@ page import="SQLHelper.Helper"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Luckerdogs Login</title>
+<title>Home</title>
 </head>
 <body>
-	<%!String userdbName;
-	String userdbPsw;
-	String dbUsertype;%>
 	<%
+		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sql = "SELECT user_type FROM User_Credentials";
 
-		String sql = "SELECT * FROM User_Credentials WHERE username=? AND password=? AND user_type=?";
-
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String user_type = request.getParameter("user_type");
-
-		if ((!(username.equals(null) || username.equals("")) && !(password
-				.equals(null) || password.equals("")))
-				&& !user_type.equals("select")) {
-			try {
-				ps = Helper.openDBConnection().prepareStatement(sql);
-				ps.setString(1, username);
-				ps.setString(2, password);
-				ps.setString(3, user_type);
-				rs = ps.executeQuery();
-				if (rs.next()) {
-					userdbName = rs.getString("username");
-					userdbPsw = rs.getString("password");
-					dbUsertype = rs.getString("user_type");
-					if (username.equals(userdbName)
-							&& password.equals(userdbPsw)
-							&& user_type.equals(dbUsertype)) {
-						session.setAttribute("username", userdbName);
-						session.setAttribute("user_type", dbUsertype);
-						response.sendRedirect("welcome.jsp");
-					}
-				} else
-					response.sendRedirect("error.jsp");
-				rs.close();
-				ps.close();
-			} catch (SQLException sqe) {
-				out.println(sqe);
-			}
-		} else {
+		try {
+			conn = Helper.openDBConnection();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
 	%>
-	<center>
-		<p style="color: red">Error In Login</p>
-	</center>
-	<%
-		getServletContext().getRequestDispatcher("/home.jsp").include(
-					request, response);
-		}
-	%>
+	
+	<form method="post" action="loginprocess.jsp">
+		<center>
+			<h2 style="color: green">Luckerdogs Login</h2>
+		</center>
+		<table border="1" align="center">
+			<tr>
+				<td>Enter Your Username:</td>
+				<td><input type="text" name="username" /></td>
+			</tr>
+			<tr>
+				<td>Enter Your Password:</td>
+				<td><input type="password" name="password" /></td>
+			</tr>
+			<tr>
+				<td>Select UserType</td>
+				<td><select name="user_type">
+						<option value="select">select</option>
+						<%
+							while (rs.next()) {
+									String usertype = rs.getString("user_type"); //create user_type dropdown list
+						%>
+						<option value=<%=usertype%>><%=usertype%></option>
+						<%
+							}
+							} catch (SQLException sqe) {
+								out.println("home" + sqe);
+							}
+						%>
+				</select></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="submit" /></td>
+		</table>
+	</form>
+	<a href="welcome.jsp">Back to welcome page</a>
+	
 </body>
 </html>

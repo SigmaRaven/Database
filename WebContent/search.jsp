@@ -12,11 +12,22 @@
 </head>
 
 <body>
-	<ul>
-		<li><a href="welcome.jsp">Home</a></li>
-		<li><a href="shopping_cart.jsp">My Cart</a></li>
-		<li><a href="logout.jsp">Logout</a></li>
-	</ul>
+	<%
+if(session.getAttribute("username") != null) {
+%>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="shopping_cart.jsp">My Cart</a></li>
+  <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="logout.jsp">Logout</a></li>
+</ul>
+<%} else { %>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="login.jsp">Login</a></li>
+</ul>
+<%} %>
 
 	<!-- Search for item by:
 item_name (type in a box - case insensitive)

@@ -13,14 +13,25 @@
 </head>
 
 <body>
-	<h1><%=session.getAttribute("username")%>'s Results
-	</h1>
 	<br>
-	<ul>
-		<li><a href="welcome.jsp">Home</a></li>
-		<li><a href="shopping_cart.jsp">My Cart</a></li>
-		<li><a href="logout.jsp">Logout</a></li>
-	</ul>
+<%
+if(session.getAttribute("username") != null) {
+%>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="shopping_cart.jsp">My Cart</a></li>
+  <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="logout.jsp">Logout</a></li>
+</ul>
+<h1>Welcome, <%=session.getAttribute("username")%></h1>
+<%} else { %>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="login.jsp">Login</a></li>
+</ul>
+<h1>Search Results</h1>
+<%} %>
 	<br>
 	<table>
 		<tr>
@@ -39,6 +50,9 @@
 
 			/*Parameters obtained by the form post*/
 			String item_name_choice = request.getParameter("item_name").toLowerCase();
+			if(item_name_choice == null || item_name_choice.length() == 0) {
+				item_name_choice = "null";
+			}
 			String seller_choice = request.getParameter("seller");
 			String min_rating_choice = request.getParameter("rating");
 			String price_sort_choice = request.getParameter("price_button");
