@@ -16,12 +16,18 @@
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		String sql = "SELECT * FROM User_Credentials WHERE username=? AND password=? AND user_type=?";
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String user_type = request.getParameter("user_type");
-
+		String sql = "";
+		if(user_type.equals("Customer")) {
+			sql = "SELECT * FROM Customer WHERE username=? AND password=?";
+		} else if(user_type.equals("Merchant")) {
+			sql = "SELECT * FROM Merchant WHERE username=? AND password=?";
+		} else if(user_type.equals("Admin")) {
+			sql = "SELECT * FROM Admin WHERE username=? AND password=?";
+		}
 		if ((!(username.equals(null) || username.equals("")) && !(password
 				.equals(null) || password.equals("")))
 				&& !user_type.equals("select")) {
@@ -29,12 +35,12 @@
 				ps = Helper.openDBConnection().prepareStatement(sql);
 				ps.setString(1, username);
 				ps.setString(2, password);
-				ps.setString(3, user_type);
+				
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					userdbName = rs.getString("username");
 					userdbPsw = rs.getString("password");
-					dbUsertype = rs.getString("user_type");
+					dbUsertype = user_type;
 					if (username.equals(userdbName)
 							&& password.equals(userdbPsw)
 							&& user_type.equals(dbUsertype)) {

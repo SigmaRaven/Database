@@ -10,17 +10,7 @@
 <title>Home</title>
 </head>
 <body>
-	<%
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sql = "SELECT user_type FROM User_Credentials";
 
-		try {
-			conn = Helper.openDBConnection();
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-	%>
 	
 	<form method="post" action="loginprocess.jsp">
 		<center>
@@ -39,17 +29,10 @@
 				<td>Select UserType</td>
 				<td><select name="user_type">
 						<option value="select">select</option>
-						<%
-							while (rs.next()) {
-									String usertype = rs.getString("user_type"); //create user_type dropdown list
-						%>
-						<option value=<%=usertype%>><%=usertype%></option>
-						<%
-							}
-							} catch (SQLException sqe) {
-								out.println("home" + sqe);
-							}
-						%>
+						<option value="Customer">user</option>
+						<option value="Merchant">merchant</option>
+						<option value="Admin">admin</option>
+
 				</select></td>
 			</tr>
 			<tr>

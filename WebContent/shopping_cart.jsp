@@ -38,7 +38,7 @@
 		while (rs.next()) {
 	%>
 
-	<form method="post" action="/servlet/UploadServlet">
+	<form method="post" action="${pageContext.request.contextPath}/UploadServlet">
 	<table>
 		<tr>
 			<th>Item No</th>
