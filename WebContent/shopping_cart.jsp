@@ -20,7 +20,6 @@
 	<h1><%=session.getAttribute("username")%>'s Cart
 	</h1>
 	<br>
-
 	<%
 		String username = session.getAttribute("username").toString();
 
@@ -28,6 +27,24 @@
 		PreparedStatement ps_getItemAttr = null;
 		ResultSet rs_getItemAttr = null;
 		conn = Helper.openDBConnection();
+		String remove_no = request.getParameter("itemno");
+		if(remove_no != null) {
+			PreparedStatement ps = null;
+		    String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = "+remove_no+" AND username = \'"+username+"\'";
+		  	ps = conn.prepareStatement(sql_delete);
+		  	//ps.setInt(1, Integer.parseInt((remove_no)));
+			//ps.setString(2, username);
+		    ps.executeUpdate(sql_delete);
+		}
+	%>
+	<%
+		int item_no;
+		String item_name;
+		double item_price;
+		int carted_quantity;
+		String seller;
+
+		
 
 		/*Display all items in the user's cart*/
 		String query = "SELECT I.item_no,I.item_name,I.item_price,SCC.carted_quantity,I.seller FROM Item I, Shopping_Cart_Contains SCC WHERE I.item_no = SCC.item_no AND SCC.username = 'smarker';";
@@ -38,7 +55,7 @@
 		while (rs.next()) {
 	%>
 
-	<form method="post" action="${pageContext.request.contextPath}/UploadServlet">
+	<form method="post" action="shopping_cart.jsp">
 	<table>
 		<tr>
 			<th>Item No</th>
@@ -51,36 +68,36 @@
 		<tr>
 			<td>
 				<%
-					int item_no = rs.getInt("item_no");
+					item_no = rs.getInt("item_no");
 					out.println(String.valueOf(item_no));
 				%>
 			</td>
 			<td>
 				<%
-					String item_name = rs.getString("item_name");
+					item_name = rs.getString("item_name");
 					out.println(item_name);
 				%>
 			</td>
 			<td>
 				<%
-					double item_price = rs.getDouble("item_price");
+					item_price = rs.getDouble("item_price");
 					out.println(String.valueOf(item_price));
 				%>
 			</td>
 			<td>
 				<%
-					int carted_quantity = rs.getInt("carted_quantity");
+					carted_quantity = rs.getInt("carted_quantity");
 					out.println(String.valueOf(carted_quantity));
 				%>
 			</td>
 			<td>
 				<%
-					String seller = rs.getString("seller");
+					seller = rs.getString("seller");
 					out.println(seller);
 				%>
 			</td>
 			<td>
-				 <input type="submit" id="button1" name="button1"/>
+				 <input type="submit" value =<%=item_no%> name="itemno" />
 				<%
 				/*MOVE THIS*/
 				/*
