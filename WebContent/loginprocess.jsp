@@ -46,6 +46,9 @@
 							&& user_type.equals(dbUsertype)) {
 						session.setAttribute("username", userdbName);
 						session.setAttribute("user_type", dbUsertype);
+						if(dbUsertype.equals("Admin")) {
+							session.setAttribute("privilege", rs.getInt("privilege"));
+						}
 						response.sendRedirect("welcome.jsp");
 					}
 				} else

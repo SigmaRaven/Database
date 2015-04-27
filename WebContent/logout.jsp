@@ -7,7 +7,9 @@ pageEncoding="ISO-8859-1"%>
 <title>Logout</title>
 </head>
 <body>
-<% session.invalidate(); %>
+<% session.invalidate();
+response.sendRedirect("welcome.jsp");%>
 <p>You have been successfully logged-out</p>
+
 </body>
 </html>

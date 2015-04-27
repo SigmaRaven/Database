@@ -12,13 +12,24 @@
 </head>
 
 <body>
+
+	<%
+		if (session.getAttribute("username") != null
+				&& session.getAttribute("user_type").equals("Customer")) {
+	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>
+		<li><a href="shopping_cart.jsp">My Cart</a></li>
 		<li><a href="search.jsp">Item Search</a></li>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
-	<h1><%=session.getAttribute("username")%>'s Cart
-	</h1>
+	<h1>
+		<%=session.getAttribute("username")%>'s Shopping Cart</h1>
+	<%
+		} else {
+			response.sendRedirect("welcome.jsp");
+		}
+	%>
 	<br>
 	<%
 		String username = session.getAttribute("username").toString();
@@ -28,13 +39,14 @@
 		ResultSet rs_getItemAttr = null;
 		conn = Helper.openDBConnection();
 		String remove_no = request.getParameter("itemno");
-		if(remove_no != null) {
+		if (remove_no != null) {
 			PreparedStatement ps = null;
-		    String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = "+remove_no+" AND username = \'"+username+"\'";
-		  	ps = conn.prepareStatement(sql_delete);
-		  	//ps.setInt(1, Integer.parseInt((remove_no)));
+			String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = "
+					+ remove_no + " AND username = \'" + username + "\'";
+			ps = conn.prepareStatement(sql_delete);
+			//ps.setInt(1, Integer.parseInt((remove_no)));
 			//ps.setString(2, username);
-		    ps.executeUpdate(sql_delete);
+			ps.executeUpdate(sql_delete);
 		}
 	%>
 	<%
@@ -43,8 +55,6 @@
 		double item_price;
 		int carted_quantity;
 		String seller;
-
-		
 
 		/*Display all items in the user's cart*/
 		String query = "SELECT I.item_no,I.item_name,I.item_price,SCC.carted_quantity,I.seller FROM Item I, Shopping_Cart_Contains SCC WHERE I.item_no = SCC.item_no AND SCC.username = 'smarker';";
@@ -56,66 +66,64 @@
 	%>
 
 	<form method="post" action="shopping_cart.jsp">
-	<table>
-		<tr>
-			<th>Item No</th>
-			<th>Item Name</th>
-			<th>Item Price</th>
-			<th>Carted Quantity</th>
-			<th>Seller</th>
-			<th>Delete<th>
-		</tr>
-		<tr>
-			<td>
-				<%
-					item_no = rs.getInt("item_no");
-					out.println(String.valueOf(item_no));
-				%>
-			</td>
-			<td>
-				<%
-					item_name = rs.getString("item_name");
-					out.println(item_name);
-				%>
-			</td>
-			<td>
-				<%
-					item_price = rs.getDouble("item_price");
-					out.println(String.valueOf(item_price));
-				%>
-			</td>
-			<td>
-				<%
-					carted_quantity = rs.getInt("carted_quantity");
-					out.println(String.valueOf(carted_quantity));
-				%>
-			</td>
-			<td>
-				<%
-					seller = rs.getString("seller");
-					out.println(seller);
-				%>
-			</td>
-			<td>
-				 <input type="submit" value =<%=item_no%> name="itemno" />
-				<%
-				/*MOVE THIS*/
-				/*
-				PreparedStatement ps = null;
-				stmt = conn.createStatement();
-			    String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = ? AND username = ?";
-			  	ps = conn.prepareStatement(sql_delete);
-			  	ps.setString(1, String.valueOf(item_no));
-				ps.setString(2, username);
-			    ps.executeUpdate(sql_delete);				
-				*/
-				%>
-			</td>
-		</tr>
-		<%
-			}
-		%>
-	</table>
+		<table>
+			<tr>
+				<th>Item No</th>
+				<th>Item Name</th>
+				<th>Item Price</th>
+				<th>Carted Quantity</th>
+				<th>Seller</th>
+				<th>Delete
+				<th>
+			</tr>
+			<tr>
+				<td>
+					<%
+						item_no = rs.getInt("item_no");
+							out.println(String.valueOf(item_no));
+					%>
+				</td>
+				<td>
+					<%
+						item_name = rs.getString("item_name");
+							out.println(item_name);
+					%>
+				</td>
+				<td>
+					<%
+						item_price = rs.getDouble("item_price");
+							out.println(String.valueOf(item_price));
+					%>
+				</td>
+				<td>
+					<%
+						carted_quantity = rs.getInt("carted_quantity");
+							out.println(String.valueOf(carted_quantity));
+					%>
+				</td>
+				<td>
+					<%
+						seller = rs.getString("seller");
+							out.println(seller);
+					%>
+				</td>
+				<td><input type="submit" value=<%=item_no%> name="itemno" /> <%
+ 	/*MOVE THIS*/
+ 		/*
+ 		PreparedStatement ps = null;
+ 		stmt = conn.createStatement();
+ 		String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = ? AND username = ?";
+ 		ps = conn.prepareStatement(sql_delete);
+ 		ps.setString(1, String.valueOf(item_no));
+ 		ps.setString(2, username);
+ 		ps.executeUpdate(sql_delete);				
+ 		 */
+ %></td>
+			</tr>
+			<%
+				}
+			%>
+		</table>
 	</form>
 
 </body>

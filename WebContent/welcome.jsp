@@ -10,7 +10,7 @@ pageEncoding="ISO-8859-1"%>
 <body>
 
 <%
-if(session.getAttribute("username") != null) {
+if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Customer")) {
 %>
 <ul>
   <li><a href="welcome.jsp">Home</a></li>
@@ -19,7 +19,23 @@ if(session.getAttribute("username") != null) {
   <li><a href="logout.jsp">Logout</a></li>
 </ul>
 <h1>Welcome, <%=session.getAttribute("username")%></h1>
-<%} else { %>
+<%} else if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Customer")){ %>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="welcome.jsp">My Marketplace</a></li>
+  <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="logout.jsp">Logout</a></li>
+</ul>
+<h1>Welcome, <%=session.getAttribute("username")%></h1>
+<%} else if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Admin")){ %>
+<ul>
+  <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="userlist.jsp">User List</a></li>
+  <li><a href="welcome.jsp">Authorizations</a></li>
+  <li><a href="logout.jsp">Logout</a></li>
+</ul>
+<h1>Welcome, <%=session.getAttribute("username")%></h1>
+<%} else {%>
 <ul>
   <li><a href="welcome.jsp">Home</a></li>
   <li><a href="search.jsp">Item Search</a></li>
