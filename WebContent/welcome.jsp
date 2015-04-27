@@ -40,6 +40,7 @@ if(session.getAttribute("username") != null && session.getAttribute("user_type")
   <li><a href="welcome.jsp">Home</a></li>
   <li><a href="search.jsp">Item Search</a></li>
   <li><a href="login.jsp">Login</a></li>
+  <li><a href="signuphome.jsp">Sign Up</a></li>
 </ul>
 <h1>Welcome to Luckerdogs!</h1>
 <%} %>

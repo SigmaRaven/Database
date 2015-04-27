@@ -16,7 +16,7 @@
 	<br>
 	<%
 		if (session.getAttribute("username") != null
-				&& session.getAttribute("user_type").equals("Admin")) {
+				&& session.getAttribute("user_type").equals("Admin") && (Integer)session.getAttribute("privilege") > 0) {
 	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>

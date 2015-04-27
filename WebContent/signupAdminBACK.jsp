@@ -40,10 +40,11 @@
 						insert = Helper.openDBConnection().prepareStatement(insertSql);
 						insert.setString(1, username);
 						insert.setString(2, password);
-						insert.setString(3, "TBD");
+						insert.setInt(3, 0);
 						insert.executeUpdate();
 						session.setAttribute("username", username);
 						session.setAttribute("user_type", dbUsertype);
+						session.setAttribute("privilege", 0);
 						response.sendRedirect("welcome.jsp");
 						insert.close();
 					//}
