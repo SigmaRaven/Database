@@ -31,7 +31,7 @@ if(session.getAttribute("username") != null && session.getAttribute("user_type")
 <ul>
   <li><a href="welcome.jsp">Home</a></li>
   <li><a href="userlist.jsp">User List</a></li>
-  <li><a href="welcome.jsp">Authorizations</a></li>
+  <li><a href="authorize.jsp">Authorizations</a></li>
   <li><a href="logout.jsp">Logout</a></li>
 </ul>
 <h1>Welcome, <%=session.getAttribute("username")%></h1>
