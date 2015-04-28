@@ -46,7 +46,7 @@
 			ps.executeUpdate(sql_update);
 		}
 	%>
-	<form method="post" action="userlist.jsp">
+	<form method="post" action="authorize.jsp">
 		<table>
 			<tr>
 				<th>Merchant Username</th>
