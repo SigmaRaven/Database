@@ -108,16 +108,7 @@
 					%>
 				</td>
 				<td><input type="submit" value=<%=item_no%> name="itemno" /> <%
- 	/*MOVE THIS*/
- 		/*
- 		PreparedStatement ps = null;
- 		stmt = conn.createStatement();
- 		String sql_delete = "DELETE FROM  WHERE item_no = ? AND username = ?";
- 		ps = conn.prepareStatement(sql_delete);
- 		ps.setString(1, String.valueOf(item_no));
- 		ps.setString(2, username);
- 		ps.executeUpdate(sql_delete);				
- 		 */
+
  %></td>
 			</tr>
 			<%
