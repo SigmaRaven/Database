@@ -51,7 +51,7 @@ if(session.getAttribute("username") != null) {
 			/*Parameters obtained by the form post*/
 			String item_name_choice = request.getParameter("item_name").toLowerCase();
 			if(item_name_choice == null || item_name_choice.length() == 0) {
-				item_name_choice = "null";
+				item_name_choice = "";
 			}
 			String seller_choice = request.getParameter("seller");
 			String min_rating_choice = request.getParameter("rating");
@@ -59,22 +59,35 @@ if(session.getAttribute("username") != null) {
 			
 			String query = "SELECT Item.item_name, Item.item_price, Item.quantity_avail, Item.item_rating, Item.seller ";
 			//String query_test = "SELECT * FROM Item;";
-			query = query + "FROM Item WHERE";
+			query = query + "FROM Item ";
 			
 			boolean delete_and = false;
-			if(item_name_choice != null && item_name_choice != "") {
+			boolean first_where = true;
+			if(!item_name_choice.equalsIgnoreCase("")) {
+				if(first_where) {
+					query = query + "WHERE";
+					first_where = false;
+				}
 				query = query + " Item.item_name=" + "'"+item_name_choice+"' AND ";
 				delete_and = true;
 			}
-			if(!seller_choice.equals("select")) {
+			if(!seller_choice.equalsIgnoreCase("select")) {
+				if(first_where) {
+					query = query + "WHERE";
+					first_where = false;
+				}
 				query = query + " Item.seller=" + "'"+seller_choice+"' AND ";
 				delete_and = true;
 			}
-			if(!min_rating_choice.equals("select")) {
+			if(!min_rating_choice.equalsIgnoreCase("select")) {
+				if(first_where) {
+					query = query + "WHERE";
+					first_where = false;
+				}
 				query = query + " Item.item_rating>=" + min_rating_choice + " AND ";
 				delete_and = true;
 			}
-			if(price_sort_choice != null && price_sort_choice != "") {
+			if(price_sort_choice != null && !price_sort_choice.equalsIgnoreCase("")) {
 				if(delete_and) {
 					query = query.substring(0,query.length()-5); //take off unnecessary AND
 				}
