@@ -39,10 +39,10 @@
 		ResultSet rs_getItemAttr = null;
 		conn = Helper.openDBConnection();
 		Statement stmt = conn.createStatement();
-		String sql_delete = "";
-		if (request.getAttribute("item_no") != null) {
+		String sql_delete = "pie";
+		if (request.getParameter("item_no") != null) {
 			sql_delete = "DELETE FROM Item WHERE Item.item_no = "
-					+ request.getAttribute("item_no");
+					+ request.getParameter("item_no");
 			stmt.executeUpdate(sql_delete);
 		}
 		String query = "SELECT Item.item_no, Item.item_name, Item.item_price, Item.quantity_avail FROM Item WHERE Item.seller = '"
@@ -50,7 +50,6 @@
 
 		ResultSet rs = stmt.executeQuery(query);
 	%>
-	<%=sql_delete%>
 	<form method="post" action="forsale.jsp">
 		<table>
 			<tr>
