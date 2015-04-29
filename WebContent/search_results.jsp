@@ -58,7 +58,8 @@
 
 			String selected_item_no = request.getParameter("itemno");
 			String selected_add_quantity = request.getParameter("add_quantity");
-			out.println("selected_item_no " + selected_item_no + " add_quantity " + selected_add_quantity);
+			out.println("selected_item_no " + selected_item_no
+					+ " add_quantity " + selected_add_quantity);
 
 			if (selected_item_no != null && selected_add_quantity != null) {
 				PreparedStatement ps = null;
@@ -92,10 +93,11 @@
 			}
 
 			/*Parameters obtained by the form post*/
-			String item_name_choice = request.getParameter("item_name")
-					.toLowerCase();
+			String item_name_choice = request.getParameter("item_name");
 			if (item_name_choice == null || item_name_choice.length() == 0) {
 				item_name_choice = "";
+			} else {
+				item_name_choice = item_name_choice.toLowerCase();
 			}
 			String seller_choice = request.getParameter("seller");
 			String min_rating_choice = request.getParameter("rating");
@@ -150,7 +152,7 @@
 
 			while (rs.next()) {
 		%>
-		<form method="post" action="search_results.jsp">
+
 		<tr>
 			<td>
 				<%
@@ -190,7 +192,7 @@
 			</td>
 
 
-			<td><select name="add_quantity">
+			<td><select name="add_quantity" form="addcart">
 					<option value="q1" selected>1</option>
 					<option value="q5">5</option>
 					<option value="q10">10</option>
@@ -198,17 +200,19 @@
 					<option value="q100">100</option>
 			</select></td>
 
-			<td><input type="hidden"
-				value=<%=request.getParameter("item_name")%> name="item_name" /> <input
-				type="hidden" value=<%=request.getParameter("seller")%>
-				name="seller" /> <input type="hidden"
-				value=<%=request.getParameter("rating")%> name="rating" /> <input
-				type="hidden" value=<%=request.getParameter("price_button")%>
-				name="price_button" /><input type="submit" value=<%=item_no%>
-				name="itemno" /></td>
+			<td><form method="post" id="addcart" action="search_results.jsp">
+					<input type="hidden" value=<%=request.getParameter("item_name")%>
+						name="item_name"> <input type="hidden"
+						value=<%=request.getParameter("seller")%> name="seller">
+					<input type="hidden" value=<%=request.getParameter("rating")%>
+						name="rating"> <input type="hidden"
+						value=<%=request.getParameter("price_button")%>
+						name="price_button"><input type="submit"
+						value=<%=item_no%> name="itemno">
+				</form></td>
 
 		</tr>
-		</form>
+
 		<%
 			}
 		%>
