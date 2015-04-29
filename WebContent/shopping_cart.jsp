@@ -41,8 +41,8 @@
 		String remove_no = request.getParameter("itemno");
 		if (remove_no != null) {
 			PreparedStatement ps = null;
-			String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = "
-					+ remove_no + " AND username = \'" + username + "\'";
+			String sql_delete = "DELETE FROM Orders WHERE item_no = "
+					+ remove_no + " AND customer_username = \'" + username + "\'";
 			ps = conn.prepareStatement(sql_delete);
 			//ps.setInt(1, Integer.parseInt((remove_no)));
 			//ps.setString(2, username);
@@ -53,11 +53,11 @@
 		int item_no;
 		String item_name;
 		double item_price;
-		int carted_quantity;
+		int item_quantity;
 		String seller;
 
 		/*Display all items in the user's cart*/
-		String query = "SELECT I.item_no,I.item_name,I.item_price,SCC.carted_quantity,I.seller FROM Item I, Shopping_Cart_Contains SCC WHERE I.item_no = SCC.item_no AND SCC.username = 'smarker';";
+		String query = "SELECT I.item_no,I.item_name,I.item_price,O.item_quantity,I.seller FROM Item I, Orders O WHERE I.item_no = O.item_no AND O.customer_username = '"+session.getAttribute("username")+"';";
 
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
@@ -97,8 +97,8 @@
 				</td>
 				<td>
 					<%
-						carted_quantity = rs.getInt("carted_quantity");
-							out.println(String.valueOf(carted_quantity));
+						item_quantity = rs.getInt("item_quantity");
+							out.println(String.valueOf(item_quantity));
 					%>
 				</td>
 				<td>
@@ -112,7 +112,7 @@
  		/*
  		PreparedStatement ps = null;
  		stmt = conn.createStatement();
- 		String sql_delete = "DELETE FROM Shopping_Cart_Contains WHERE item_no = ? AND username = ?";
+ 		String sql_delete = "DELETE FROM  WHERE item_no = ? AND username = ?";
  		ps = conn.prepareStatement(sql_delete);
  		ps.setString(1, String.valueOf(item_no));
  		ps.setString(2, username);
