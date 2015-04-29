@@ -49,6 +49,9 @@
 						if(dbUsertype.equals("Admin")) {
 							session.setAttribute("privilege", rs.getInt("privilege"));
 						}
+						if(dbUsertype.equals("Merchant")) {
+							session.setAttribute("company", rs.getString("company"));
+						}
 						response.sendRedirect("welcome.jsp");
 					}
 				} else
