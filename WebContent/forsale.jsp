@@ -45,53 +45,85 @@
 					+ request.getParameter("item_no");
 			stmt.executeUpdate(sql_delete);
 		}
+		if (request.getParameter("itemname") != null
+				&& request.getParameter("itenname").length() != 0) {
+			String newName = request.getParameter("itemname");
+			newName = newName.replaceAll("[^A-Za-z0-9 ]", "");
+			double newPrice = Double.parseDouble("itemprice");
+			int newQuantity = Integer.parseInt("itemoffer");
+			String sql_insert = "INSERT INTO Item VALUES (" + newName + ","
+					+ newPrice + "," + newQuantity + ",0,"
+					+ session.getAttribute("company") + ");";
+			stmt.executeUpdate(sql_insert);
+		}
 		String query = "SELECT Item.item_no, Item.item_name, Item.item_price, Item.quantity_avail FROM Item WHERE Item.seller = '"
 				+ session.getAttribute("company") + "'";
 
 		ResultSet rs = stmt.executeQuery(query);
 	%>
+
+	<table>
+		<tr>
+			<th>Item Name</th>
+			<th>Item Price</th>
+			<th>Quantity Avail</th>
+			<th>Remove</th>
+		</tr>
+
+		<%
+			while (rs.next()) {
+		%>
+
+		<tr>
+			<td>
+				<%
+					String item_name = rs.getString("item_name");
+						out.println(item_name);
+				%>
+			</td>
+			<td>
+				<%
+					double item_price = rs.getDouble("item_price");
+						out.println(String.valueOf(item_price));
+				%>
+			</td>
+			<td>
+				<%
+					int quantity_avail = rs.getInt("quantity_avail");
+						out.println(String.valueOf(quantity_avail));
+				%>
+			</td>
+			<td><form method="post" action="forsale.jsp">
+					<input type="submit" value=<%=rs.getInt("item_no")%> name="item_no" />
+				</form></td>
+		</tr>
+		<%
+			}
+		%>
+	</table>
+	<br>
 	<form method="post" action="forsale.jsp">
-		<table>
+		<center>
+			<h2 style="color: green">Offer New Item</h2>
+		</center>
+		<table border="1" align="center">
 			<tr>
-				<th>Item Name</th>
-				<th>Item Price</th>
-				<th>Quantity Avail</th>
-				<th>Remove</th>
+				<td>Enter Item Name:</td>
+				<td><input type="text" name="itemname" /></td>
 			</tr>
-
-			<%
-				while (rs.next()) {
-			%>
-
 			<tr>
-				<td>
-					<%
-						String item_name = rs.getString("item_name");
-							out.println(item_name);
-					%>
-				</td>
-				<td>
-					<%
-						double item_price = rs.getDouble("item_price");
-							out.println(String.valueOf(item_price));
-					%>
-				</td>
-				<td>
-					<%
-						int quantity_avail = rs.getInt("quantity_avail");
-							out.println(String.valueOf(quantity_avail));
-					%>
-				</td>
-				<td><input type="submit" value=<%=rs.getInt("item_no")%>
-					name="item_no" /></td>
+				<td>Enter Item Price:</td>
+				<td><input type="text" name="itemprice" /></td>
 			</tr>
-			<%
-				}
-			%>
+			<tr>
+				<td>Enter Item Quantity:</td>
+				<td><input type="text" name="itemoffer" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="submit" /></td>
 		</table>
 	</form>
-	<br>
-
 
 </body>
 </html>
