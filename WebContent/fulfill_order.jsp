@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="table.css">
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Search Results</title>
+<title>Pending Orders</title>
 </head>
 
 <body>
@@ -20,7 +20,6 @@
 	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>
-		<li><a href="userlist.jsp">User List</a></li>
 		<li><a href="fulfill_order.jsp">Pending Orders</a></li>
 		<li><a href="logout.jsp">Logout</a></li>
 
@@ -38,12 +37,12 @@
 		String sql_update;
 		if (request.getParameter("fulfill") != null) {
 			sql_update = "UPDATE Orders SET orders_status = \'fulfilled\' WHERE order_id = \'"
-				+ request.getParameter("order_id") + "\'";
+				+ request.getParameter("fulfill") + "\'";
 			ps = conn.prepareStatement(sql_update);
 			ps.executeUpdate(sql_update);
 		}else if(request.getParameter("reject") != null) {
 			sql_update = "UPDATE Orders SET orders_status = \'rejected\' WHERE order_id = "
-				+ request.getParameter("order_id");
+				+ request.getParameter("reject");
 			ps = conn.prepareStatement(sql_update);
 			ps.executeUpdate(sql_update);
 		}
@@ -56,6 +55,8 @@
 				<th>Item Number</th>
 				<th>Item Quantity</th>
 				<th>Order Status</th>
+				<th>Fulfills</th>
+				<th>Reject</th>
 			</tr>
 			<%
 				PreparedStatement ps_getItemAttr = null;
@@ -74,7 +75,6 @@
 						String order_id = rsc.getString("order_id");
 							out.println(order_id);
 					%>
-					<input type = "hidden" value = <%=order_id %> name = "order_id"/>
 				</td>
 				<td>
 					<%
@@ -94,8 +94,8 @@
 							out.println(order_status);
 					%>
 				</td>
-				<td><input type="submit" value="Fulfill" name="fulfill" /></td>
-				<td><input type="submit" value="Reject" name="reject" /></td>
+				<td><input type="submit" value=<%=order_id %> name="fulfill" /></td>
+				<td><input type="submit" value=<%=order_id %> name="reject" /></td>
 			</tr>
 			<%
 				}
