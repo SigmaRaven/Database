@@ -53,41 +53,28 @@
 		<%
 			Connection conn = null;
 			PreparedStatement ps_getItemAttr = null;
-			ResultSet rs_getItemAttr = null;
+			ResultSet rs = null;
 			conn = Helper.openDBConnection();
-
+			Statement stmt = conn.createStatement();
 			String selected_item_no = request.getParameter("itemno");
 			String selected_add_quantity = request.getParameter("add_quantity");
-			
+
 			if (selected_item_no != null && selected_add_quantity != null) {
 				PreparedStatement ps = null;
 				String merchant_username;
-				String sql_get_merchant_username = "SELECT M.username FROM Item I, Merchant M WHERE I.item_no = "
-						+ "'"
-						+ selected_item_no
-						+ "'"
-						+ ", I.seller = M.company;";
+				String sql_get_merchant_username = "SELECT M.username FROM Item I, Merchant M WHERE I.item_no="
+						+ selected_item_no+";";
 
-				out.println(sql_get_merchant_username);
-
-				/*
-				SELECT M.username FROM Item I, Merchant M WHERE I.item_no = selected_item_no, I.seller = M.company;
-				 */
-				/* Syntax:
-				INSERT INTO Orders (item_quantity, customer_username, merchant_username)
-				VALUES (1, 'Smarker', 'Ray');
-				 */
+				rs = stmt.executeQuery(sql_get_merchant_username);
+				rs.next();
 				String sql_insert = "INSERT INTO Orders (item_no, item_quantity, customer_username, merchant_username) ";
 				sql_insert = sql_insert + "VALUES (" + selected_item_no + ","
 						+ selected_add_quantity + "," + "'"
 						+ session.getAttribute("username") + "'" + "," + "'"
-						+ sql_get_merchant_username + "'" + ");";
-
-				out.println(sql_insert);
+						+ rs.getString("username") + "'" + ");";
 
 				ps = conn.prepareStatement(sql_insert);
-				ps.executeUpdate("INSERT INTO Orders (item_no, item_quantity, customer_username, merchant_username) VALUES (3,1, 'Smarker', 'Ray');"); //sql_insert
-				System.out.println("Inserted item_no: " + selected_item_no);
+				ps.executeUpdate(sql_insert);
 			}
 
 			/*Parameters obtained by the form post*/
@@ -145,8 +132,7 @@
 
 			//out.println(query);
 
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
 		%>
@@ -191,18 +177,18 @@
 
 
 			<td><select name="add_quantity" form="addcart">
-					<option value="q1" selected>1</option>
-					<option value="q5">5</option>
-					<option value="q10">10</option>
-					<option value="q50">50</option>
-					<option value="q100">100</option>
+					<option value="1" selected>1</option>
+					<option value="5">5</option>
+					<option value="10">10</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
 			</select></td>
 
 			<td><form method="post" id="addcart" action="search_results.jsp">
 					<input type="hidden" value=<%=request.getParameter("item_name")%>
 						name="item_name"> <input type="hidden"
-						value=<%=request.getParameter("seller")%> name="seller">
-					<input type="hidden" value=<%=request.getParameter("rating")%>
+						value=<%=request.getParameter("seller")%> name="seller"> <input
+						type="hidden" value=<%=request.getParameter("rating")%>
 						name="rating"> <input type="hidden"
 						value=<%=request.getParameter("price_button")%>
 						name="price_button"><input type="submit"

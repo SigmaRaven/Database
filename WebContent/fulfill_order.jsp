@@ -62,7 +62,7 @@
 				PreparedStatement ps_getItemAttr = null;
 				ResultSet rs_getItemAttr = null;
 
-				String query = "SELECT * FROM Orders WHERE Orders.orders_status = \'cart\' AND Orders.merchant_username = "
+				String query = "SELECT * FROM Orders WHERE Orders.orders_status = \'pending\' AND Orders.merchant_username = "
 						+ "\'" + session.getAttribute("username") + "\'";
 				Statement stmt = conn.createStatement();
 				ResultSet rsc = stmt.executeQuery(query);

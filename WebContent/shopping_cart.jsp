@@ -24,7 +24,8 @@
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 	<h1>
-		<%=session.getAttribute("username")%>'s Shopping Cart</h1>
+		<%=session.getAttribute("username")%>'s Shopping Cart
+	</h1>
 	<%
 		} else {
 			response.sendRedirect("welcome.jsp");
@@ -42,11 +43,19 @@
 		if (remove_no != null) {
 			PreparedStatement ps = null;
 			String sql_delete = "DELETE FROM Orders WHERE item_no = "
-					+ remove_no + " AND customer_username = \'" + username + "\'";
+					+ remove_no + " AND customer_username = \'" + username
+					+ "\'";
 			ps = conn.prepareStatement(sql_delete);
 			//ps.setInt(1, Integer.parseInt((remove_no)));
 			//ps.setString(2, username);
 			ps.executeUpdate(sql_delete);
+		}
+		String checkout = request.getParameter("checkout");
+		if (checkout != null) {
+			String sql_checkout = "UPDATE Orders SET orders_status=\'pending\' WHERE customer_username=\'"
+					+ session.getAttribute("username") + "\';";
+			PreparedStatement ps = conn.prepareStatement(sql_checkout);
+			ps.executeUpdate(sql_checkout);
 		}
 	%>
 	<%
@@ -57,7 +66,8 @@
 		String seller;
 
 		/*Display all items in the user's cart*/
-		String query = "SELECT I.item_no,I.item_name,I.item_price,O.item_quantity,I.seller FROM Item I, Orders O WHERE I.item_no = O.item_no AND O.customer_username = '"+session.getAttribute("username")+"';";
+		String query = "SELECT I.item_no,I.item_name,I.item_price,O.item_quantity,I.seller FROM Item I, Orders O WHERE I.item_no = O.item_no AND O.customer_username = '"
+				+ session.getAttribute("username") + "' AND O.orders_status=\'cart\';";
 
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
@@ -73,8 +83,7 @@
 				<th>Item Price</th>
 				<th>Carted Quantity</th>
 				<th>Seller</th>
-				<th>Delete
-				<th>
+				<th>Delete</th>
 			</tr>
 			<tr>
 				<td>
@@ -107,15 +116,15 @@
 							out.println(seller);
 					%>
 				</td>
-				<td><input type="submit" value=<%=item_no%> name="itemno" /> <%
-
- %></td>
+				<td><input type="submit" value=<%=item_no%> name="itemno" /></td>
 			</tr>
 			<%
 				}
 			%>
 		</table>
 	</form>
-
+	<form method="post" action="shopping_cart.jsp">
+		<input type="submit" value="checkout" name="checkout">
+	</form>
 </body>
 </html>
