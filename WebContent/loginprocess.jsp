@@ -67,7 +67,7 @@
 		<p style="color: red">Error In Login</p>
 	</center>
 	<%
-		getServletContext().getRequestDispatcher("/home.jsp").include(
+		getServletContext().getRequestDispatcher("/welcome.jsp").include(
 					request, response);
 		}
 	%>

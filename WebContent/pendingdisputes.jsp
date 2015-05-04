@@ -43,7 +43,7 @@
 		Statement stmt = conn.createStatement();
 		if (request.getParameter("resolve") != null) {
 			query = "DELETE FROM Disputes WHERE dispute_id ="
-					+ request.getParameter("resolve");
+					+ request.getParameter("resolve")+";";
 			stmt.executeUpdate(query);
 		}
 	%>
