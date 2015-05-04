@@ -58,12 +58,23 @@
 				&& request.getParameter("itemname").length() != 0) {
 			String newName = request.getParameter("itemname");
 			newName = newName.replaceAll("[^A-Za-z0-9 ]", "");
-			double newPrice = Double.parseDouble("itemprice");
-			int newQuantity = Integer.parseInt("itemoffer");
-			String sql_insert = "INSERT INTO Item VALUES (" + newName + ","
-					+ newPrice + "," + newQuantity + ",0,"
-					+ session.getAttribute("company") + ");";
+			try {
+			double newPrice = Double.parseDouble(request
+					.getParameter("itemprice"));
+			int newQuantity = Integer.parseInt(request
+					.getParameter("itemoffer"));
+			String sql_insert = "INSERT INTO Item (item_name,item_price,quantity_avail,item_rating,seller) VALUES ('"
+					+ newName
+					+ "',"
+					+ newPrice
+					+ ","
+					+ newQuantity
+					+ ",0,'" + session.getAttribute("company") + "');";
 			stmt.executeUpdate(sql_insert);
+			} catch (Exception e) {
+				response.sendRedirect("welcome.jsp");
+			}
+
 		}
 		String query = "SELECT Item.item_no, Item.item_name, Item.item_price, Item.quantity_avail FROM Item WHERE Item.seller = '"
 				+ session.getAttribute("company") + "'";
