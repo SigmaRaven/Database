@@ -27,6 +27,8 @@
 
 	</ul>
 	<%
+		} else {
+			response.sendRedirect("welcome.jsp");
 		}
 		Connection conn = Helper.openDBConnection();
 		PreparedStatement ps = null;

@@ -40,5 +40,7 @@ request.setAttribute("userTypeList", userTypeList);*/
 				<td><input type="submit" value="submit" /></td>
 		</table>
 	</form>
+	<br>
+	<a href="welcome.jsp">Back to welcome page</a>
 </body>
 </html>

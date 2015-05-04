@@ -9,7 +9,6 @@
 <title>Luckerdogs Sign Up</title>
 </head>
 <body>
-
 	<%
 	String userType = request.getParameter("user_type");
 	if(userType.equals("Customer")) {
@@ -27,6 +26,7 @@
 	<center>
 		<p style="color: red">Error: please select a type of user.</p>
 	</center>
+	
 
 </body>
 </html>

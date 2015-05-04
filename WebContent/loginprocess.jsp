@@ -52,6 +52,8 @@
 						if (dbUsertype.equals("Merchant")) {
 							session.setAttribute("company",
 									rs.getString("company"));
+							session.setAttribute("authorized",
+									rs.getInt("authorized"));
 						}
 						response.sendRedirect("welcome.jsp");
 					}

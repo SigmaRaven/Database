@@ -16,7 +16,8 @@
 	<br>
 	<%
 		if (session.getAttribute("username") != null
-				&& session.getAttribute("user_type").equals("Merchant")) {
+				&& session.getAttribute("user_type").equals("Merchant")
+				&& (Integer) session.getAttribute("authorized") == 1) {
 	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>
@@ -30,6 +31,13 @@
 		<%=session.getAttribute("username")%></h1>
 	<%
 		} else {
+	%>
+	<center>
+		<p style="color: red">User not authorized to sell.</p>
+	</center>
+	<%
+		getServletContext().getRequestDispatcher("/welcome.jsp")
+					.include(request, response);
 			response.sendRedirect("welcome.jsp");
 		}
 	%>
@@ -47,7 +55,7 @@
 			stmt.executeUpdate(sql_delete);
 		}
 		if (request.getParameter("itemname") != null
-				&& request.getParameter("itenname").length() != 0) {
+				&& request.getParameter("itemname").length() != 0) {
 			String newName = request.getParameter("itemname");
 			newName = newName.replaceAll("[^A-Za-z0-9 ]", "");
 			double newPrice = Double.parseDouble("itemprice");

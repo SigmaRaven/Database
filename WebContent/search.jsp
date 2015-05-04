@@ -13,7 +13,7 @@
 
 <body>
 	<%
-if(session.getAttribute("username") != null) {
+if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Customer")) {
 %>
 <ul>
   <li><a href="welcome.jsp">Home</a></li>
@@ -21,11 +21,13 @@ if(session.getAttribute("username") != null) {
   <li><a href="search.jsp">Item Search</a></li>
   <li><a href="logout.jsp">Logout</a></li>
 </ul>
-<%} else { %>
+<%} else if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Merchant")){ %>
 <ul>
   <li><a href="welcome.jsp">Home</a></li>
+  <li><a href="forsale.jsp">My Marketplace</a></li>
   <li><a href="search.jsp">Item Search</a></li>
-  <li><a href="login.jsp">Login</a></li>
+  <li><a href="fulfill_order.jsp">Pending Orders</a>
+  <li><a href="logout.jsp">Logout</a></li>
 </ul>
 <%} %>
 
