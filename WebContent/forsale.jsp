@@ -22,6 +22,7 @@
 		<li><a href="welcome.jsp">Home</a></li>
 		<li><a href="forsale.jsp">My Marketplace</a></li>
 		<li><a href="search.jsp">Item Search</a></li>
+		<li><a href="fulfill_order.jsp">Pending Orders</a>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 	<h1>

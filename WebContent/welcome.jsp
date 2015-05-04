@@ -16,6 +16,7 @@ if(session.getAttribute("username") != null && session.getAttribute("user_type")
   <li><a href="welcome.jsp">Home</a></li>
   <li><a href="shopping_cart.jsp">My Cart</a></li>
   <li><a href="search.jsp">Item Search</a></li>
+  <li><a href="order_history.jsp">Order HIstory</a></li>
   <li><a href="logout.jsp">Logout</a></li>
 </ul>
 <h1>Welcome, <%=session.getAttribute("username")%></h1>
@@ -24,7 +25,7 @@ if(session.getAttribute("username") != null && session.getAttribute("user_type")
   <li><a href="welcome.jsp">Home</a></li>
   <li><a href="forsale.jsp">My Marketplace</a></li>
   <li><a href="search.jsp">Item Search</a></li>
-  <li><a href = "fulfill_order.jsp">Pending Orders</a>
+  <li><a href="fulfill_order.jsp">Pending Orders</a>
   <li><a href="logout.jsp">Logout</a></li>
 </ul>
 <h1>Welcome, <%=session.getAttribute("username")%></h1>
