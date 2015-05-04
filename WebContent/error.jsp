@@ -7,9 +7,9 @@ pageEncoding="ISO-8859-1"%>
 <title>Login Error</title>
 </head>
 <body>
-<center><p style="color:red">Sorry, your record is not available.</p></center>
+<center><p style="color:red">Invalid username/password/user type combination.</p></center>
 <%
-getServletContext().getRequestDispatcher("/welcome.jsp").include(request, response);
+getServletContext().getRequestDispatcher("/login.jsp").include(request, response);
 %>
 </body>
 </html>

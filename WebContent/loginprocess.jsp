@@ -16,16 +16,15 @@
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String user_type = request.getParameter("user_type");
 		String sql = "";
-		if(user_type.equals("Customer")) {
+		if (user_type.equals("Customer")) {
 			sql = "SELECT * FROM Customer WHERE username=? AND password=?";
-		} else if(user_type.equals("Merchant")) {
+		} else if (user_type.equals("Merchant")) {
 			sql = "SELECT * FROM Merchant WHERE username=? AND password=?";
-		} else if(user_type.equals("Admin")) {
+		} else if (user_type.equals("Admin")) {
 			sql = "SELECT * FROM Admin WHERE username=? AND password=?";
 		}
 		if ((!(username.equals(null) || username.equals("")) && !(password
@@ -35,7 +34,7 @@
 				ps = Helper.openDBConnection().prepareStatement(sql);
 				ps.setString(1, username);
 				ps.setString(2, password);
-				
+
 				rs = ps.executeQuery();
 				if (rs.next()) {
 					userdbName = rs.getString("username");
@@ -46,11 +45,13 @@
 							&& user_type.equals(dbUsertype)) {
 						session.setAttribute("username", userdbName);
 						session.setAttribute("user_type", dbUsertype);
-						if(dbUsertype.equals("Admin")) {
-							session.setAttribute("privilege", rs.getInt("privilege"));
+						if (dbUsertype.equals("Admin")) {
+							session.setAttribute("privilege",
+									rs.getInt("privilege"));
 						}
-						if(dbUsertype.equals("Merchant")) {
-							session.setAttribute("company", rs.getString("company"));
+						if (dbUsertype.equals("Merchant")) {
+							session.setAttribute("company",
+									rs.getString("company"));
 						}
 						response.sendRedirect("welcome.jsp");
 					}
@@ -59,7 +60,14 @@
 				rs.close();
 				ps.close();
 			} catch (SQLException sqe) {
-				out.println(sqe);
+	%>
+	<center>
+		<p style="color: red">Error In Login</p>
+	</center>
+	<%
+		getServletContext().getRequestDispatcher("/login.jsp")
+						.include(request, response);
+
 			}
 		} else {
 	%>
@@ -67,7 +75,7 @@
 		<p style="color: red">Error In Login</p>
 	</center>
 	<%
-		getServletContext().getRequestDispatcher("/welcome.jsp").include(
+		getServletContext().getRequestDispatcher("/login.jsp").include(
 					request, response);
 		}
 	%>
