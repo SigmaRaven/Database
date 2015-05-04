@@ -13,31 +13,46 @@
 	String userdbPsw;
 	String dbUsertype;%>
 	<%
-	PreparedStatement insert = null;
-	PreparedStatement checkUsername = null;
-	ResultSet rs = null;
-	
-	String checkSql = "SELECT * FROM (SELECT C.username FROM Customer C UNION SELECT M.username FROM Merchant M UNION SELECT A.username FROM Admin A) AS users WHERE username=?";
-	String insertSql = "INSERT into Admin (username, password, privilege) VALUES(?,?,?)";
+		PreparedStatement checkAdmin = null;
+		PreparedStatement insert = null;
+		PreparedStatement checkUsername = null;
+		ResultSet rs = null;
+		String authSql = "SELECT * FROM Admin WHERE username = 'admin';";
+		String checkSql = "SELECT * FROM (SELECT C.username FROM Customer C UNION SELECT M.username FROM Merchant M UNION SELECT A.username FROM Admin A) AS users WHERE username=?";
+		String insertSql = "INSERT into Admin (username, password, privilege) VALUES(?,?,?)";
+		checkAdmin = Helper.openDBConnection().prepareStatement(authSql);
+		rs = checkAdmin.executeQuery();
+		rs.next();
+		if ((!(request.getParameter("auser").equals("admin") && request
+				.getParameter("apass").equals(rs.getString("password"))))) {
+	%>
+	<center>
+		<p style="color: red">Error: new account is not authorized.</p>
+	</center>
+	<%
+		getServletContext().getRequestDispatcher(
+					"/signupAdminFRONT.jsp").include(request, response);
+		} else {
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
 
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+			if ((!(username.equals(null) || username.equals("")) && !(password
+					.equals(null) || password.equals("")))) {
+				try {
+					checkUsername = Helper.openDBConnection()
+							.prepareStatement(checkSql);
+					checkUsername.setString(1, username);
+					rs = checkUsername.executeQuery();
+					if (!rs.next()) {
+						//userdbName = rs.getString("username");
+						//out.println(userdbName);
+						dbUsertype = "Admin";
+						//if (username.equals(userdbName)) {
 
-		if ((!(username.equals(null) || username.equals("")) && !(password
-				.equals(null) || password.equals("")))) {
-			try {
-				checkUsername = Helper.openDBConnection().prepareStatement(checkSql);
-				checkUsername.setString(1, username);
-				rs = checkUsername.executeQuery();
-				if (!rs.next()) {
-					//userdbName = rs.getString("username");
-					//out.println(userdbName);
-					dbUsertype = "Admin";
-					//if (username.equals(userdbName)) {
-
-					//} else {
+						//} else {
 						//out.println("WHAT");
-						insert = Helper.openDBConnection().prepareStatement(insertSql);
+						insert = Helper.openDBConnection()
+								.prepareStatement(insertSql);
 						insert.setString(1, username);
 						insert.setString(2, password);
 						insert.setInt(3, 0);
@@ -47,29 +62,33 @@
 						session.setAttribute("privilege", 0);
 						response.sendRedirect("welcome.jsp");
 						insert.close();
-					//}
-				} else {
-					%>
-					<center>
-						<p style="color: red">Error: that username is already taken. Please try again.</p>
-					</center>
-				<% 
-				getServletContext().getRequestDispatcher("/signupAdminFRONT.jsp").include(
-					request, response);
-				}
-				checkUsername.close();
-				rs.close();
-			} catch (SQLException sqe) {
-				out.println(sqe);
-			}
-		} else {
+						//}
+					} else {
 	%>
 	<center>
-		<p style="color: red">Error: you failed to fill out all provided fields. Please try again.</p>
+		<p style="color: red">Error: that username is already taken.
+			Please try again.</p>
 	</center>
 	<%
-		getServletContext().getRequestDispatcher("/signupAdminFRONT.jsp").include(
-					request, response);
+		getServletContext().getRequestDispatcher(
+								"/signupAdminFRONT.jsp").include(request,
+								response);
+					}
+					checkUsername.close();
+					rs.close();
+				} catch (SQLException sqe) {
+					out.println(sqe);
+				}
+			} else {
+	%>
+	<center>
+		<p style="color: red">Error: you failed to fill out all provided
+			fields. Please try again.</p>
+	</center>
+	<%
+		getServletContext().getRequestDispatcher(
+						"/signupAdminFRONT.jsp").include(request, response);
+			}
 		}
 	%>
 </body>

@@ -58,9 +58,7 @@
 
 			String selected_item_no = request.getParameter("itemno");
 			String selected_add_quantity = request.getParameter("add_quantity");
-			out.println("selected_item_no " + selected_item_no
-					+ " add_quantity " + selected_add_quantity);
-
+			
 			if (selected_item_no != null && selected_add_quantity != null) {
 				PreparedStatement ps = null;
 				String merchant_username;

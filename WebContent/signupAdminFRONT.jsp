@@ -24,6 +24,13 @@
 				<td><input type="password" maxlength="10" name="password" /></td>
 			</tr>
 			<tr>
+				<td>Enter Root Username:</td>
+				<td><input type="text" maxlength="10" name="auser" /></td>
+			</tr>
+			<tr>
+			<td>Enter Root Password:</td>
+			<td><input type="password" maxlength="10" name="apass" /></td>
+			<tr>
 				<td></td>
 				<td><input type="submit" value="submit" /></td>
 		</table>
