@@ -18,16 +18,16 @@
 	ResultSet rs = null;
 	
 	String checkSql = "SELECT * FROM (SELECT C.username FROM Customer C UNION SELECT M.username FROM Merchant M UNION SELECT A.username FROM Admin A) AS users WHERE username=?";
-	String insertSql = "INSERT into Customer (username, password, name, shipping_addr) VALUES(?,?,?,?)";
+	String insertSql = "INSERT into Customer (username, password, name, shipping_addr, billing_info) VALUES(?,?,?,?,?)";
 
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
 		String shippingAddress = request.getParameter("shipping address");
-
+		String billingInfo = request.getParameter("billing info");
 		if ((!(username.equals(null) || username.equals("")) && !(password
 				.equals(null) || password.equals("")) && !(name.equals(null) || name.equals("")) && 
-				!(shippingAddress.equals(null) || shippingAddress.equals("")))) {
+				!(shippingAddress.equals(null) || shippingAddress.equals("")) && !(billingInfo.equals(null) || billingInfo.equals("")))) {
 			try {
 				checkUsername = Helper.openDBConnection().prepareStatement(checkSql);
 				checkUsername.setString(1, username);
@@ -43,6 +43,7 @@
 						insert.setString(2, password);
 						insert.setString(3, name);
 						insert.setString(4, shippingAddress);
+						insert.setString(5, billingInfo);
 						insert.executeUpdate();
 						session.setAttribute("username", username);
 						session.setAttribute("user_type", dbUsertype);
@@ -51,10 +52,11 @@
 					//}
 				} else {
 					%>
-					<center>
-						<p style="color: red">Error: that username is already taken. Please try again.</p>
-					</center>
-				<% 
+	<center>
+		<p style="color: red">Error: that username is already taken.
+			Please try again.</p>
+	</center>
+	<% 
 				getServletContext().getRequestDispatcher("/signupCustomerFRONT.jsp").include(
 					request, response);
 				}
@@ -66,7 +68,8 @@
 		} else {
 	%>
 	<center>
-		<p style="color: red">Error: you failed to fill out all provided fields. Please try again.</p>
+		<p style="color: red">Error: you failed to fill out all provided
+			fields. Please try again.</p>
 	</center>
 	<%
 		getServletContext().getRequestDispatcher("/signupCustomerFRONT.jsp").include(

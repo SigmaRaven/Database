@@ -65,7 +65,8 @@
 		String checkout = request.getParameter("checkout");
 		if (checkout != null) {
 			String sql_checkout = "UPDATE Orders SET orders_status=\'pending\' WHERE customer_username=\'"
-					+ session.getAttribute("username") + "\';";
+					+ session.getAttribute("username")
+					+ "\' AND orders_status=\'cart\';";
 			PreparedStatement ps = conn.prepareStatement(sql_checkout);
 			ps.executeUpdate(sql_checkout);
 		}

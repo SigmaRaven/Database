@@ -32,6 +32,10 @@
 				<td><input type="text" maxlength="45" name="shipping address" /></td>
 			</tr>
 			<tr>
+				<td>Billing Info:</td>
+				<td><input type="text" maxlength="45" name="billing info" /></td>
+			</tr>
+			<tr>
 				<td></td>
 				<td><input type="submit" value="submit" /></td>
 		</table>

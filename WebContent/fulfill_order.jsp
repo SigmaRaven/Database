@@ -35,6 +35,7 @@
 	<%
 		Connection conn = Helper.openDBConnection();
 		PreparedStatement ps = null;
+		ResultSet rs;
 		String sql_update;
 		if (request.getParameter("fulfill") != null) {
 			sql_update = "UPDATE Orders SET orders_status = \'fulfilled\' WHERE order_id = \'"
@@ -46,62 +47,82 @@
 					+ request.getParameter("reject");
 			ps = conn.prepareStatement(sql_update);
 			ps.executeUpdate(sql_update);
+			String sql_fetch = "SELECT quantity_avail FROM ITEM WHERE item_no="
+					+ request.getParameter("itemno") + ";";
+			ps = conn.prepareStatement(sql_fetch);
+			rs = ps.executeQuery(sql_fetch);
+			rs.next();
+			int total = rs.getInt("quantity_avail")
+					+ Integer.parseInt(request.getParameter("quant"));
+			sql_update = "Update Item SET quantity_avail=" + total
+					+ " WHERE item_no=" + request.getParameter("itemno")
+					+ ";";
+			ps = conn.prepareStatement(sql_update);
+			ps.executeUpdate(sql_update);
 		}
 	%>
-	<form method="post" action="fulfill_order.jsp">
-		<table>
-			<tr>
-				<th>Order ID</th>
-				<th>Item Number</th>
-				<th>Item Quantity</th>
-				<th>Order Status</th>
-				<th>Fulfills</th>
-				<th>Reject</th>
-			</tr>
-			<%
-				PreparedStatement ps_getItemAttr = null;
-				ResultSet rs_getItemAttr = null;
 
-				String query = "SELECT * FROM Orders WHERE Orders.orders_status = \'pending\' AND Orders.merchant_username = "
-						+ "\'" + session.getAttribute("username") + "\'";
-				Statement stmt = conn.createStatement();
-				ResultSet rsc = stmt.executeQuery(query);
+	<table>
+		<tr>
+			<th>Order ID</th>
+			<th>Item Number</th>
+			<th>Item Quantity</th>
+			<th>Order Status</th>
+			<th>Fulfills</th>
+			<th>Reject</th>
+		</tr>
+		<%
+			PreparedStatement ps_getItemAttr = null;
+			ResultSet rs_getItemAttr = null;
 
-				while (rsc.next()) {
-			%>
-			<tr>
-				<td>
-					<%
-						String order_id = rsc.getString("order_id");
-							out.println(order_id);
-					%>
-				</td>
-				<td>
-					<%
-						String item_no = rsc.getString("item_no");
-							out.println(item_no);
-					%>
-				</td>
-				<td>
-					<%
-						String item_quantity = rsc.getString("item_quantity");
-							out.println(item_quantity);
-					%>
-				</td>
-				<td>
-					<%
-						String order_status = rsc.getString("orders_status");
-							out.println(order_status);
-					%>
-				</td>
-				<td><input type="submit" value=<%=order_id%> name="fulfill" /></td>
-				<td><input type="submit" value=<%=order_id%> name="reject" /></td>
-			</tr>
-			<%
-				}
-			%>
-		</table>
-	</form>
+			String query = "SELECT * FROM Orders WHERE Orders.orders_status = \'pending\' AND Orders.merchant_username = "
+					+ "\'" + session.getAttribute("username") + "\'";
+			Statement stmt = conn.createStatement();
+			ResultSet rsc = stmt.executeQuery(query);
+
+			while (rsc.next()) {
+		%>
+		<tr>
+			<td>
+				<%
+					String order_id = rsc.getString("order_id");
+						out.println(order_id);
+				%>
+			</td>
+			<td>
+				<%
+					String item_no = rsc.getString("item_no");
+						out.println(item_no);
+				%>
+			</td>
+			<td>
+				<%
+					String item_quantity = rsc.getString("item_quantity");
+						out.println(item_quantity);
+				%>
+			</td>
+			<td>
+				<%
+					String order_status = rsc.getString("orders_status");
+						out.println(order_status);
+				%>
+			</td>
+			<td><form method="post" action="fulfill_order.jsp">
+					<input type="hidden" value=<%=order_id%> name="fulfill" /> <input
+						type="submit" value="Fulfill">
+				</form></td>
+			<td><form method="post" action="fulfill_order.jsp">
+					<input type="hidden" value=<%=order_id%> name="reject" /><input
+						type="hidden" value=<%=item_no%> name="itemno"> <input
+						type="hidden" value=<%=item_quantity%> name="quant" /> <input
+						type="submit" value="Reject">
+				</form></td>
+		</tr>
+		<%
+			}
+		%>
+	</table>
+
 	<br>
 
 

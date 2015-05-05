@@ -16,8 +16,8 @@
 	<br>
 	<%
 		if (session.getAttribute("username") != null
-				&& session.getAttribute("user_type").equals("Admin")
-				&& (Integer) session.getAttribute("privilege") > 2) {
+			&& session.getAttribute("user_type").equals("Admin")
+			&& (Integer) session.getAttribute("privilege") > 2) {
 	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>
@@ -31,21 +31,21 @@
 	<h1>Merchants Pending</h1>
 	<%
 		} else {
-			response.sendRedirect("welcome.jsp");
-		}
+		response.sendRedirect("welcome.jsp");
+			}
 	%>
 	<br>
 	<%
 		Connection conn = Helper.openDBConnection();
 
-		String query;
+			String query;
 
-		Statement stmt = conn.createStatement();
-		if (request.getParameter("resolve") != null) {
-			query = "DELETE FROM Disputes WHERE dispute_id ="
-					+ request.getParameter("resolve")+";";
-			stmt.executeUpdate(query);
-		}
+			Statement stmt = conn.createStatement();
+			if (request.getParameter("resolve") != null) {
+		query = "DELETE FROM Disputes WHERE dispute_id ="
+				+ request.getParameter("resolve") + ";";
+		stmt.executeUpdate(query);
+			}
 	%>
 	<table>
 		<tr>
@@ -65,21 +65,22 @@
 			<td>
 				<%
 					int id = rsc.getInt("dispute_id");
-						out.println(id);
+								out.println(id);
 				%>
 			</td>
 			<td>
 				<%
 					String disputee = rsc.getString("source");
-						out.println(disputee);
+								out.println(disputee);
 				%>
 			</td>
-			<td><form method="post" action="dispute.jsp">
-					<input type="hidden" value=<%=rsc.getInt("order_id")%> name="order" />
-					<input type="hidden" value=<%=rsc.getString("message")%>
-						name="message" /><input type="hidden"
-						value=<%=rsc.getString("source")%> name="source"><input
-						type="submit" value=<%=rsc.getInt("dispute_id")%> name="dispute" />
+			<td><form method="post" action="pendingdisputes.jsp">
+					<input type="hidden" value=<%=rsc.getInt("order_id")%>
+						name="order_id" /> <input type="hidden"
+						value="<%=rsc.getString("message")%>" name="message"> <input
+						type="hidden" value=<%=rsc.getString("source")%> name="source"><input
+						type="hidden" value=<%=rsc.getInt("dispute_id")%>
+						name="dispute_id" /> <input type="submit" value="View">
 				</form></td>
 		</tr>
 		<%
@@ -90,44 +91,52 @@
 	<br>
 	<%
 		if (request.getParameter("dispute_id") != null) {
-			query = "SELECT * FROM Orders WHERE order_id="
-					+ request.getParameter("order_id") + ";";
-			rsc = stmt.executeQuery(query);
+		query = "SELECT * FROM Orders WHERE order_id="
+				+ request.getParameter("order_id") + ";";
+		rsc = stmt.executeQuery(query);
+		rsc.next();
 	%>
-	<table border="1" align="center">
-		<tr>
-			<td>Disputee</td>
-			<td>
-				<%
-					if (request.getParameter("source").equals("customer")) {
-							out.println(rsc.getString("customer_username"));
-						} else {
-							out.println(rsc.getString("merchant_username"));
-						}
-				%>
-			</td>
-		</tr>
-		<tr>
-			<td>Other Party</td>
-			<td>
-				<%
-					if (request.getParameter("source").equals("merchant")) {
-							out.println(rsc.getString("customer_username"));
-						} else {
-							out.println(rsc.getString("merchant_username"));
-						}
-				%>
-			</td>
-		</tr>
-		<tr>
-			<td>Message</td>
-			<td><%=request.getParameter("message")%></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit"
-				value=<%=request.getParameter("dispute_id")%> name="resolve" /></td>
-	</table>
+	<form method="post" action="pendingdisputes.jsp">
+		<table border="1" align="center">
+			<tr>
+				<td>Disputee</td>
+				<td>
+					<%
+						if (request.getParameter("source").equals("Customer")) {
+											out.println(rsc.getString("customer_username"));
+										} else {
+											out.println(rsc.getString("merchant_username"));
+										}
+					%>
+				</td>
+			</tr>
+			<tr>
+				<td>Other Party</td>
+				<td>
+					<%
+						if (request.getParameter("source").equals("merchant")) {
+											out.println(rsc.getString("customer_username"));
+										} else {
+											out.println(rsc.getString("merchant_username"));
+										}
+					%>
+				</td>
+			</tr>
+			<tr>
+				<td>Message</td>
+				<td>
+					<%
+						out.println(request.getParameter("message"));
+					%>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="hidden"
+					value=<%=request.getParameter("dispute_id")%> name="resolve" /> <input
+					type="submit" value="Resolve"></td>
+		</table>
+	</form>
 	<%
 		}
 	%>

@@ -59,8 +59,8 @@
 			<th>Item Number</th>
 			<th>Item Quantity</th>
 			<th>Order Status</th>
-			<th>Dispute Order</th>
 			<th>Dispute Message</th>
+			<th>Dispute Order</th>
 		</tr>
 		<%
 				//PreparedStatement ps_getItemAttr = null;
@@ -102,7 +102,8 @@
 			<td><input type="text" name="dispute" form=<%=i%> /></td>
 			<td>
 				<form method="post" id=<%=i%> action="order_history.jsp">
-					<input type="submit" value=<%=order_id%> name="order_id" />
+					<input type="hidden" value=<%=order_id%> name="order_id" >
+					<input type="submit" value="Dispute"/>
 				</form>
 			</td>
 		</tr>
