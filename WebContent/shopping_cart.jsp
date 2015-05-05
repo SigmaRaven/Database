@@ -49,6 +49,18 @@
 			//ps.setInt(1, Integer.parseInt((remove_no)));
 			//ps.setString(2, username);
 			ps.executeUpdate(sql_delete);
+			String sql_getquant = "SELECT Item.quantity_avail FROM Item WHERE item_no="
+					+ request.getParameter("itemno") + ";";
+			ps = conn.prepareStatement(sql_getquant);
+			rs_getItemAttr = ps.executeQuery(sql_getquant);
+			rs_getItemAttr.next();
+			int newTotal = Integer.parseInt(request.getParameter("quant"))
+					+ rs_getItemAttr.getInt("quantity_avail");
+			String sql_updatequant = "UPDATE Item SET quantity_avail="
+					+ newTotal + " WHERE item_no="
+					+ request.getParameter("itemno") + ";";
+			ps = conn.prepareStatement(sql_updatequant);
+			ps.executeUpdate(sql_updatequant);
 		}
 		String checkout = request.getParameter("checkout");
 		if (checkout != null) {
@@ -119,7 +131,10 @@
 					%>
 				</td>
 				<td><input type="hidden" value=<%=rs.getInt("order_id")%>
-					name="orderno"><input type="submit" value="Remove" /></td>
+					name="orderno"><input type="hidden"
+					value=<%=rs.getInt("item_quantity")%> name="quant"><input
+					type="hidden" value=<%=rs.getInt("item_no")%> name="itemno"><input
+					type="submit" value="Remove" /></td>
 			</tr>
 			<%
 				}
