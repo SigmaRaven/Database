@@ -45,7 +45,6 @@
 			<th>Item Name</th>
 			<th>Item Price</th>
 			<th>Quantity Avail</th>
-			<th>Rating</th>
 			<th>Seller</th>
 			<th>Add Quantity</th>
 			<th>Add to Cart</th>
@@ -63,7 +62,7 @@
 				PreparedStatement ps = null;
 				String merchant_username;
 				String sql_get_merchant_username = "SELECT M.username FROM Item I, Merchant M WHERE I.item_no="
-						+ selected_item_no+";";
+						+ selected_item_no + ";";
 
 				rs = stmt.executeQuery(sql_get_merchant_username);
 				rs.next();
@@ -75,11 +74,16 @@
 
 				ps = conn.prepareStatement(sql_insert);
 				ps.executeUpdate(sql_insert);
+				String sql_changequant;
+				int total = Integer.parseInt(request.getParameter("left")) - Integer.parseInt(selected_add_quantity);
+				sql_changequant = "UPDATE Item SET quantity_avail="+total+" WHERE item_no="+selected_item_no+";";
+				ps = conn.prepareStatement(sql_changequant);
+				ps.executeUpdate(sql_changequant);
 			}
 
 			/*Parameters obtained by the form post*/
 			String item_name_choice = request.getParameter("item_name");
-			if (item_name_choice == null || item_name_choice.length() == 0) {
+			if (item_name_choice == null || item_name_choice.equals("null") || item_name_choice.length() == 0) {
 				item_name_choice = "";
 			} else {
 				item_name_choice = item_name_choice.toLowerCase();
@@ -90,7 +94,7 @@
 
 			String query = "SELECT Item.item_no, Item.item_name, Item.item_price, Item.quantity_avail, Item.item_rating, Item.seller ";
 			//String query_test = "SELECT * FROM Item;";
-			query = query + "FROM Item ";
+			query = query + "FROM Item WHERE Item.item_no>0";
 
 			boolean delete_and = false;
 			boolean first_where = true;
@@ -141,47 +145,48 @@
 			<td>
 				<%
 					int item_no = rs.getInt("item_no");
-						out.println(String.valueOf(item_no));
+								out.println(String.valueOf(item_no));
 				%>
 			</td>
 			<td>
 				<%
 					String item_name = rs.getString("item_name");
-						out.println(item_name);
+								out.println(item_name);
 				%>
 			</td>
 			<td>
 				<%
 					double item_price = rs.getDouble("item_price");
-						out.println(String.valueOf(item_price));
+								out.println(String.valueOf(item_price));
 				%>
 			</td>
 			<td>
 				<%
 					int quantity_avail = rs.getInt("quantity_avail");
-						out.println(String.valueOf(quantity_avail));
-				%>
-			</td>
-			<td>
-				<%
-					int rating = rs.getInt("item_rating");
-						out.println(String.valueOf(rating));
+								out.println(String.valueOf(quantity_avail));
 				%>
 			</td>
 			<td>
 				<%
 					String seller = rs.getString("seller");
-						out.println(seller);
+								out.println(seller);
 				%>
 			</td>
 
 
 			<td><select name="add_quantity" form="addcart">
 					<option value="1" selected>1</option>
-					<option value="5">5</option>
-					<option value="10">10</option>
-					<option value="50">50</option>
-					<option value="100">100</option>
+					<%
+						int i = rs.getInt("quantity_avail");
+										int j = 2;
+										while (j <= i) {
+					%>
+
+					<option value=<%=j%>><%=j%></option>
+					<%
+						j++;
+										}
+					%>
 			</select></td>
 
 			<td><form method="post" id="addcart" action="search_results.jsp">
@@ -191,8 +196,10 @@
 						type="hidden" value=<%=request.getParameter("rating")%>
 						name="rating"> <input type="hidden"
 						value=<%=request.getParameter("price_button")%>
-						name="price_button"><input type="submit"
-						value=<%=item_no%> name="itemno">
+						name="price_button"><input type="hidden"
+						value=<%=rs.getInt("quantity_avail")%> name="left"><input
+						type="hidden" value=<%=item_no%> name="itemno"><input
+						type="submit" value="Cart">
 				</form></td>
 
 		</tr>

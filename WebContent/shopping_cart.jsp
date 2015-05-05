@@ -39,10 +39,10 @@
 		PreparedStatement ps_getItemAttr = null;
 		ResultSet rs_getItemAttr = null;
 		conn = Helper.openDBConnection();
-		String remove_no = request.getParameter("itemno");
+		String remove_no = request.getParameter("orderno");
 		if (remove_no != null) {
 			PreparedStatement ps = null;
-			String sql_delete = "DELETE FROM Orders WHERE item_no = "
+			String sql_delete = "DELETE FROM Orders WHERE order_id = "
 					+ remove_no + " AND customer_username = \'" + username
 					+ "\'";
 			ps = conn.prepareStatement(sql_delete);
@@ -66,13 +66,12 @@
 		String seller;
 
 		/*Display all items in the user's cart*/
-		String query = "SELECT I.item_no,I.item_name,I.item_price,O.item_quantity,I.seller FROM Item I, Orders O WHERE I.item_no = O.item_no AND O.customer_username = '"
-				+ session.getAttribute("username") + "' AND O.orders_status=\'cart\';";
+		String query = "SELECT O.order_id,I.item_no,I.item_name,I.item_price,O.item_quantity,I.seller FROM Item I, Orders O WHERE I.item_no = O.item_no AND O.customer_username = '"
+				+ session.getAttribute("username")
+				+ "' AND O.orders_status=\'cart\';";
 
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
-
-		while (rs.next()) {
 	%>
 
 	<form method="post" action="shopping_cart.jsp">
@@ -85,6 +84,9 @@
 				<th>Seller</th>
 				<th>Delete</th>
 			</tr>
+			<%
+				while (rs.next()) {
+			%>
 			<tr>
 				<td>
 					<%
@@ -116,7 +118,8 @@
 							out.println(seller);
 					%>
 				</td>
-				<td><input type="submit" value=<%=item_no%> name="itemno" /></td>
+				<td><input type="hidden" value=<%=rs.getInt("order_id")%>
+					name="orderno"><input type="submit" value="Remove" /></td>
 			</tr>
 			<%
 				}
