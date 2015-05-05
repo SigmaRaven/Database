@@ -84,6 +84,7 @@
 
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(query);
+		boolean ok = false;
 	%>
 
 	<form method="post" action="shopping_cart.jsp">
@@ -98,6 +99,7 @@
 			</tr>
 			<%
 				while (rs.next()) {
+					ok = true;
 			%>
 			<tr>
 				<td>
@@ -141,8 +143,14 @@
 			%>
 		</table>
 	</form>
+	<%
+		if (ok) {
+	%>
 	<form method="post" action="shopping_cart.jsp">
 		<input type="submit" value="checkout" name="checkout">
 	</form>
+	<%
+		}
+	%>
 </body>
 </html>

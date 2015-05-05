@@ -79,6 +79,7 @@
 				sql_changequant = "UPDATE Item SET quantity_avail="+total+" WHERE item_no="+selected_item_no+";";
 				ps = conn.prepareStatement(sql_changequant);
 				ps.executeUpdate(sql_changequant);
+				response.sendRedirect("shopping_cart.jsp");
 			}
 
 			/*Parameters obtained by the form post*/
