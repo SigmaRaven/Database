@@ -32,7 +32,7 @@
 		}
 		Connection conn = Helper.openDBConnection();
 		PreparedStatement ps = null;
-		String sql_update="";
+		String sql_update = "";
 		if (request.getParameter("username") != null
 				&& request.getParameter("privilege") != null) {
 			sql_update = "UPDATE Admin SET privilege = "
@@ -84,8 +84,9 @@
 		</table>
 	</form>
 	<br>
-	Permission 1: Removing regular users
-	Permission 2: Authorizing merchants
-	Permission 3: Resolving disputes
+	<center>
+		Permission 1: Removing regular users<br> Permission 2:
+		Authorizing merchants<br> Permission 3: Resolving disputes
+	</center>
 </body>
 </html>

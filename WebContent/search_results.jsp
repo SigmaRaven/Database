@@ -15,12 +15,13 @@
 <body>
 	<br>
 	<%
-		if (session.getAttribute("username") != null) {
+		if (session.getAttribute("username") != null && session.getAttribute("user_type").equals("Customer")) {
 	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>
 		<li><a href="shopping_cart.jsp">My Cart</a></li>
 		<li><a href="search.jsp">Item Search</a></li>
+		<li><a href="order_history.jsp">Order History</a></li>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 	<h1>
@@ -31,8 +32,6 @@
 	%>
 	<ul>
 		<li><a href="welcome.jsp">Home</a></li>
-		<li><a href="search.jsp">Item Search</a></li>
-		<li><a href="login.jsp">Login</a></li>
 	</ul>
 	<h1>Search Results</h1>
 	<%

@@ -17,7 +17,7 @@
 		<li><a href="welcome.jsp">Home</a></li>
 		<li><a href="shopping_cart.jsp">My Cart</a></li>
 		<li><a href="search.jsp">Item Search</a></li>
-		<li><a href="order_history.jsp">Order HIstory</a></li>
+		<li><a href="order_history.jsp">Order History</a></li>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 	<h1>

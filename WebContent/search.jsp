@@ -13,23 +13,30 @@
 
 <body>
 	<%
-if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Customer")) {
-%>
-<ul>
-  <li><a href="welcome.jsp">Home</a></li>
-  <li><a href="shopping_cart.jsp">My Cart</a></li>
-  <li><a href="search.jsp">Item Search</a></li>
-  <li><a href="logout.jsp">Logout</a></li>
-</ul>
-<%} else if(session.getAttribute("username") != null && session.getAttribute("user_type").equals("Merchant")){ %>
-<ul>
-  <li><a href="welcome.jsp">Home</a></li>
-  <li><a href="forsale.jsp">My Marketplace</a></li>
-  <li><a href="search.jsp">Item Search</a></li>
-  <li><a href="fulfill_order.jsp">Pending Orders</a>
-  <li><a href="logout.jsp">Logout</a></li>
-</ul>
-<%} %>
+		if (session.getAttribute("username") != null
+				&& session.getAttribute("user_type").equals("Customer")) {
+	%>
+	<ul>
+		<li><a href="welcome.jsp">Home</a></li>
+		<li><a href="shopping_cart.jsp">My Cart</a></li>
+		<li><a href="search.jsp">Item Search</a></li>
+		<li><a href="order_history.jsp">Order History</a></li>
+		<li><a href="logout.jsp">Logout</a></li>
+	</ul>
+	<%
+		} else if (session.getAttribute("username") != null
+				&& session.getAttribute("user_type").equals("Merchant")) {
+	%>
+	<ul>
+		<li><a href="welcome.jsp">Home</a></li>
+		<li><a href="forsale.jsp">My Marketplace</a></li>
+		<li><a href="search.jsp">Item Search</a></li>
+		<li><a href="fulfill_order.jsp">Pending Orders</a>
+		<li><a href="logout.jsp">Logout</a></li>
+	</ul>
+	<%
+		}
+	%>
 
 	<!-- Search for item by:
 item_name (type in a box - case insensitive)
@@ -50,7 +57,8 @@ item_price (drop-down) - order by price increasing decreasing
 			rs_getMerchants = ps_getMerchants.executeQuery();
 	%>
 	<h1>Search for an Item</h1>
-	<form method="post" action="search_results.jsp"> <!-- goes to this page after click submit button -->
+	<form method="post" action="search_results.jsp">
+		<!-- goes to this page after click submit button -->
 		<h2>Refine your search:</h2>
 		<br> Item Name: <input type="text" name="item_name" /> <br>
 		Items Sold by: <select name="seller">
@@ -73,14 +81,14 @@ item_price (drop-down) - order by price increasing decreasing
 				int rating;
 				for (rating = 0; rating <= 10; rating++) {
 			%>
-					<option value=<%=rating%>><%=rating%></option>
+			<option value=<%=rating%>><%=rating%></option>
 			<%
 				}
 			%>
-		</select> <br>Sort by Price: <br> <input type="radio" name="price_button" value="ASC" checked> Increasing<br>
-		<input type="radio" name="price_button" value="DESC"> Decreasing<br> 
-		
-		<input type="submit" value="Submit">
+		</select> <br>Sort by Price: <br> <input type="radio"
+			name="price_button" value="ASC" checked> Increasing<br>
+		<input type="radio" name="price_button" value="DESC">
+		Decreasing<br> <input type="submit" value="Submit">
 	</form>
 </body>
 </html>
